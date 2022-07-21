@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,43 @@ public class PlayerMovement : MonoBehaviour
     private bool _isGrounded = true;
     private Transform _groundChecker;
 
-    public InputAction playerControl;
-     
+    public PlayerControlAction playerControl;
+
+    private InputAction move;
+    private InputAction fire;
+    private InputAction jump;
+    private InputAction dash;
+
+    private void Awake()
+    {
+        playerControl = new PlayerControlAction();
+    }
+
+    private void OnEnable()
+    {
+        move = playerControl.Player.Move;
+        move.Enable();
+
+        fire = playerControl.Player.Fire;
+        fire.Enable();
+        fire.performed += Fire;
+
+        jump = playerControl.Player.Jump;
+        jump.Enable();
+        jump.performed += Jump;
+
+        dash = playerControl.Player.Dash;
+        dash.Enable();
+        dash.performed += Dash;
+    }
+
+    private void OnDisable()
+    {
+        move.Disable();
+        fire.Disable();
+        jump.Disable();
+    }
+
     void Start()
     {
         _body = GetComponent<Rigidbody>();
@@ -30,25 +66,31 @@ public class PlayerMovement : MonoBehaviour
      
      
         _inputs = Vector3.zero;
-        _inputs.x = Input.GetAxis("Horizontal");
-        _inputs.z = Input.GetAxis("Vertical");
+        _inputs.x = move.ReadValue<Vector2>().x;
+        _inputs.z = move.ReadValue<Vector2>().y;
         if (_inputs != Vector3.zero)
             transform.forward = _inputs;
-     
-        if (Input.GetButtonDown("Jump") && _isGrounded)
-        {
-            _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-        }
-        if (Input.GetButtonDown("Dash"))
-        {
-            Vector3 dashVelocity = Vector3.Scale(transform.forward, DashDistance * new Vector3((Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime), 0, (Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime)));
-            _body.AddForce(dashVelocity, ForceMode.VelocityChange);
-        }
     }
      
      
     void FixedUpdate()
     {
         _body.MovePosition(_body.position + _inputs * Speed * Time.fixedDeltaTime);
+    }
+
+    private void Fire(InputAction.CallbackContext context)
+    {
+        print("Fire Triggered");
+    }
+    
+    private void Jump(InputAction.CallbackContext context)
+    {
+        _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+    }
+    
+    private void Dash(InputAction.CallbackContext context)
+    {
+        Vector3 dashVelocity = Vector3.Scale(transform.forward, DashDistance * new Vector3((Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime), 0, (Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime)));
+        _body.AddForce(dashVelocity, ForceMode.VelocityChange);
     }
 }

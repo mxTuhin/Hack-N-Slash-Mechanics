@@ -455,7 +455,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419339820}
-  m_LocalRotation: {x: 0.006829168, y: 4.656504e-10, z: -3.180079e-12, w: 0.9999767}
+  m_LocalRotation: {x: 0.006829169, y: -0.0000000022769988, z: 1.5550372e-11, w: 0.9999767}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -990,6 +990,7 @@ GameObject:
   - component: {fileID: 668617837}
   - component: {fileID: 668617836}
   - component: {fileID: 668617838}
+  - component: {fileID: 668617839}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -1009,6 +1010,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1329865810}
   - {fileID: 158555405}
   - {fileID: 571779074}
   m_Father: {fileID: 0}
@@ -1062,16 +1064,37 @@ MonoBehaviour:
   DashDistance: 5
   Ground:
     serializedVersion: 2
-    m_Bits: 0
-  playerControl:
-    m_Name: Player Control
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: aa7eefc1-41ea-4962-a263-46d058280bfd
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+    m_Bits: 65
+--- !u!114 &668617839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668617834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 5fb1e827fe52f29458651b8c9b6af389, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &670623164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1564,6 +1587,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 11e7dc1ea258b684e9abbc314a0216bc, type: 3}
   m_PrefabInstance: {fileID: 670623164}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1329865809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1329865810}
+  m_Layer: 0
+  m_Name: GroudChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1329865810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329865809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 668617835}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1412453306
 GameObject:
   m_ObjectHideFlags: 3
@@ -1955,7 +2009,7 @@ GameObject:
   - component: {fileID: 2001164118}
   - component: {fileID: 2001164117}
   - component: {fileID: 2001164116}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2035,7 +2089,7 @@ Transform:
   m_GameObject: {fileID: 2001164115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
