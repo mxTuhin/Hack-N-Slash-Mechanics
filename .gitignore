@@ -35,3 +35,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 pass.txt
+
+# Custom Ignores
+Assets/_Character/Player.fbx
+
