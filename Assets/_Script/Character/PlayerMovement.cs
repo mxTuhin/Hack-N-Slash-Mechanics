@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerControlAction playerControl;
 
     private InputAction move;
-    private InputAction fire;
+    private InputAction attack;
     private InputAction jump;
     private InputAction dash;
 
@@ -34,9 +34,9 @@ public class PlayerMovement : MonoBehaviour
         move = playerControl.Player.Move;
         move.Enable();
 
-        fire = playerControl.Player.Fire;
-        fire.Enable();
-        fire.performed += Fire;
+        attack = playerControl.Player.Attack;
+        attack.Enable();
+        attack.performed += Attack;
 
         jump = playerControl.Player.Jump;
         jump.Enable();
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         move.Disable();
-        fire.Disable();
+        attack.Disable();
         jump.Disable();
     }
 
@@ -78,9 +78,9 @@ public class PlayerMovement : MonoBehaviour
         _body.MovePosition(_body.position + _inputs * Speed * Time.fixedDeltaTime);
     }
 
-    private void Fire(InputAction.CallbackContext context)
+    private void Attack(InputAction.CallbackContext context)
     {
-        print("Fire Triggered");
+        print("Attack Triggered");
     }
     
     private void Jump(InputAction.CallbackContext context)
