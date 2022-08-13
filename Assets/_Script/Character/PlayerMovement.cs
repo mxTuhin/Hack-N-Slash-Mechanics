@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,13 +14,16 @@ public class PlayerMovement : MonoBehaviour
     public float GroundDistance = 0.2f;
     public float DashDistance = 5f;
     public LayerMask Ground;
+    Vector3 m_EulerAngleVelocity;
      
     [Header("Player Trackers")]
+    public GameObject playerGUI;
     private Rigidbody _body;
     private Vector3 _inputs = Vector3.zero;
     private bool _isGrounded = true;
     private Transform _groundChecker;
-    public GameObject playerGUI;
+    private Vector3 direction;
+    
 
     [Header("Input System")]
     public PlayerControlAction playerControl;
@@ -27,6 +32,13 @@ public class PlayerMovement : MonoBehaviour
     private InputAction attack;
     private InputAction jump;
     private InputAction dash;
+    private InputAction mouseAxis;
+
+    [Header("Camera System")] [SerializeField] private Vector2 turn;
+    [SerializeField] private float sensitivity = 0.5f;
+    private Vector3 deltaMove;
+    [SerializeField] private float speed = 1;
+    private Vector3 mousePos;
 
     private void Awake()
     {
@@ -50,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
         dash = playerControl.Player.Dash;
         dash.Enable();
         dash.performed += Dash;
+
+        mouseAxis = playerControl.Player.Look;
+        mouseAxis.Enable();
     }
 
     private void OnDisable()
@@ -57,12 +72,14 @@ public class PlayerMovement : MonoBehaviour
         move.Disable();
         attack.Disable();
         jump.Disable();
+        mouseAxis.Disable();
     }
 
     void Start()
     {
         _body = GetComponent<Rigidbody>();
         _groundChecker = transform.GetChild(0);
+        m_EulerAngleVelocity = new Vector3(0, 100, 0);
         
     }
     
@@ -73,24 +90,36 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         _isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
-     
-     
-        _inputs = Vector3.zero;
-        _inputs.x = move.ReadValue<Vector2>().x;
-        _inputs.z = move.ReadValue<Vector2>().y;
-        if (_inputs != Vector3.zero)
-            transform.forward = _inputs;
+        MovementInputModule();
+        RotationWithMouseInputModule();
+        // RotationWithMouseMovementModule();
+
     }
      
      
     void FixedUpdate()
     {
+        
         _body.MovePosition(_body.position + _inputs * Speed * Time.fixedDeltaTime);
+        
+        
     }
     
     #endregion
     
     #region ControlMechanics
+
+    private void MovementInputModule()
+    {
+        _inputs = Vector3.zero;
+        _inputs.x = move.ReadValue<Vector2>().x;
+        _inputs.z = move.ReadValue<Vector2>().y;
+        if (_inputs != Vector3.zero)
+        {
+            transform.forward = _inputs;
+        }
+    }
+    
     private void Attack(InputAction.CallbackContext context)
     {
         print("Attack Triggered");
@@ -115,5 +144,29 @@ public class PlayerMovement : MonoBehaviour
         playerGUI.SetActive(true);
     }
     
+    #endregion
+    
+    #region MouseMechanics
+
+    private void RotationWithMouseInputModule()
+    {
+        mousePos = Mouse.current.delta.ReadValue();
+        print(mousePos);
+
+        turn.x = mousePos.x;
+        turn.y = mousePos.y;
+    }
+
+    public CinemachineFreeLook cineCam;
+    private void RotationWithMouseMovementModule()
+    {
+        // transform.localRotation = Quaternion.Euler(0, turn.x, 0);
+        if (mousePos.magnitude >= 0.1f)
+        {
+            _body.rotation = Quaternion.Euler(_body.rotation.eulerAngles + new Vector3(0f, turn.x, 0f));
+        }
+        
+        // transform.localRotation = quaternion.Euler(-turn.y, 0, 0);
+    }
     #endregion
 }
